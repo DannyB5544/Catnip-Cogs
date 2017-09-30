@@ -14,7 +14,7 @@ from random import choice
 from copy import deepcopy
 # If I got here, congratulate myself for not fucking up yet.
 __author__ = "Danstr"
-__version__ = "0.0.2"
+__version__ = "0.1.0"
 class BankError(Exception):
     pass
 class NoAccount(BankError):
