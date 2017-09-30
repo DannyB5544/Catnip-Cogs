@@ -63,7 +63,7 @@ class CreditDrop:
         print(str(self.number))
         channel = message.channel
         author = message.author
-        if author = self.bot.user:
+        if author == self.bot.user:
             print(' lol no')
         elif self.number == 1: # LUCKY NUMBER 7! For testing only. When it goes live, there'll be a much higher count.
             print("is gonna rule me")
