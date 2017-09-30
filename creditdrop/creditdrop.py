@@ -13,7 +13,7 @@ from cogs.utils.chat_formatting import box, pagify, escape_mass_mentions
 from random import choice
 # If I got here, congratulate myself for not fucking up yet.
 __author__ = "Danstr"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 class CreditDrop:
     """CreditDrop. For those who want moar nadeko, apparently."""
