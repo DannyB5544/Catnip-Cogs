@@ -59,7 +59,7 @@ class CreditDrop:
             self.randNum = randint(0, 2) # Re-rolls the number.
             self.number = (self.randNum)
 
-    async def on_message(self, ctx, message):
+    async def on_message(self, message):
         print(str(self.number))
         channel = message.channel
         author = message.author
@@ -69,7 +69,7 @@ class CreditDrop:
         if self.number == 1: # LUCKY NUMBER 7! For testing only. When it goes live, there'll be a much higher count.
             print("is gonna rule me")
             thefun = 'The Magic number has been triggered! Quick! Use [p]claim to grab the credits! first one wins!'
-            await self.bot.send_message(channel, thefun)
+            await bot.send_message(channel, thefun)
         else:
             pass
 def setup(bot):
