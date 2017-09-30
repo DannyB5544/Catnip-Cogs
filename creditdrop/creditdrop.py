@@ -24,7 +24,7 @@ class CreditDrop:
     """CreditDrop. For those who want moar nadeko, apparently."""
     def __init__(self, bot):
         self.bot = bot
-        self.randNum = randint(1, 10)
+        self.randNum = randint(1, 420)
         self.number = (self.randNum)
         self.claimpot = 100
         
@@ -47,17 +47,17 @@ class CreditDrop:
         """Credits! Get your Credits Right here!"""
         claimauthor = ctx.message.author #Not sorry for that var name
         bank = self.bot.get_cog("Economy").bank #Finally grab the bank.
-        if self.number == 1:
+        if self.number == 42:
             try:
                 await self.bot.say(str(claimauthor) + 'has gained ' + str(self.claimpot) + ' credits!')
                 bank.deposit_credits(ctx.message.author, self.claimpot)
-                self.randNum = randint(0, 2) # Re-rolls the number.
+                self.randNum = randint(1, 420) # Re-rolls the number.
                 self.number = (self.randNum)
             except NoAccount:
                 pass
         else:
             await self.bot.say('Lol no fuck off' + str(self.number))
-            self.randNum = randint(0, 2) # Re-rolls the number.
+            self.randNum = randint(1, 420) # Re-rolls the number.
             self.number = (self.randNum)
 
     async def on_message(self, message):
@@ -71,7 +71,7 @@ class CreditDrop:
             thefun = 'The Magic number has been triggered! Quick! Use [p]claim to grab the credits! first one wins!'
             await self.bot.send_message(channel, thefun)
         else:
-            self.randNum = randint(0, 2) # Re-rolls the number.
+            self.randNum = randint(1, 420) #Re-rolls the number.
             self.number = (self.randNum)
             print(str(self.number))
 def setup(bot):
