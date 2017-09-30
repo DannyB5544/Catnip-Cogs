@@ -69,7 +69,7 @@ class CreditDrop:
         if self.number == 1: # LUCKY NUMBER 7! For testing only. When it goes live, there'll be a much higher count.
             print("is gonna rule me")
             thefun = 'The Magic number has been triggered! Quick! Use [p]claim to grab the credits! first one wins!'
-            await bot.send_message(channel, thefun)
+            await self.bot.send_message(channel, thefun)
         else:
             pass
 def setup(bot):
