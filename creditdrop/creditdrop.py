@@ -14,7 +14,7 @@ from random import choice
 from copy import deepcopy
 # If I got here, congratulate myself for not fucking up yet.
 __author__ = "Danstr"
-__version__ = "0.1.0"
+__version__ = "0.1.2"
 class BankError(Exception):
     pass
 class NoAccount(BankError):
@@ -53,10 +53,10 @@ class CreditDrop:
                 bank.deposit_credits(ctx.message.author, self.claimpot)
                 self.randNum = randint(1, 420) # Re-rolls the number.
                 self.number = (self.randNum)
-            except NoAccount:
-                pass
+            except Exception as e:
+                print('Well, that broke. Heres why: {}'.format(type(e)))
         else:
-            await self.bot.say('Lol no fuck off' + str(self.number))
+            await self.bot.say('Claim unavailable')
             self.randNum = randint(1, 420) # Re-rolls the number.
             self.number = (self.randNum)
 
