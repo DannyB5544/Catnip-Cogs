@@ -12,6 +12,8 @@ import re
 from cogs.utils.chat_formatting import box, pagify, escape_mass_mentions
 from random import choice
 # If I got here, congratulate myself for not fucking up yet.
+__author__ = "Danstr"
+__version__ = "0.0.2"
 
 class CreditDrop:
     """CreditDrop. For those who want moar nadeko, apparently."""
@@ -28,8 +30,9 @@ class CreditDrop:
             await send_cmd_help(ctx)
     @creditdrop.command(pass_context=True)
     @checks.is_owner()
-    async def setcredit(self, ctx, number: int):
+    async def setcredit(self, ctx, creditinput: int):
         """Sets the credits a user will gain when  [p]claim is ran."""
+        self.claimpot = creditinput
         await self.bot.say('[p]claim amount now set to ' + str(self.claimpot) + ' credits')
     # Put what your command does here
     # This command executes as !example poop
