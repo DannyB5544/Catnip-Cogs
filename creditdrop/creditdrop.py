@@ -48,12 +48,12 @@ class CreditDrop:
         bank = self.bot.get_cog("Economy").bank #Finally grab the bank.
         if self.number == 1:
             try:
-                await self.bot.say(claimppi + 'has gained ' + str(self.claimpot) + ' credits!')
+                await self.bot.say(str(claimppi) + 'has gained ' + str(self.claimpot) + ' credits!')
                 bank.deposit_credits(ctx.message.author, self.claimpot)
                 self.randNum = randint(0, 2) # Re-rolls the number.
                 self.number = (self.randNum)
             except NoAccount:
-                await self.bot.say(claimppi + ' has no account to deposit credits into!')
+                await self.bot.say(str(claimppi) + ' has no account to deposit credits into!')
         else:
             await self.bot.say('Lol no fuck off' + str(self.number))
             self.randNum = randint(0, 2) # Re-rolls the number.
