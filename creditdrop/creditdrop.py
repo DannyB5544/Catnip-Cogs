@@ -11,6 +11,7 @@ import asyncio
 import re
 from cogs.utils.chat_formatting import box, pagify, escape_mass_mentions
 from random import choice
+from copy import deepcopy
 # If I got here, congratulate myself for not fucking up yet.
 __author__ = "Danstr"
 __version__ = "0.0.2"
