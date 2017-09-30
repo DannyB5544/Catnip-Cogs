@@ -13,7 +13,11 @@ from cogs.utils.chat_formatting import box, pagify, escape_mass_mentions
 from random import choice
 # If I got here, congratulate myself for not fucking up yet.
 __author__ = "Danstr"
-__version__ = "0.0.3"
+__version__ = "0.0.2"
+class BankError(Exception):
+    pass
+class NoAccount(BankError):
+    pass
 
 class CreditDrop:
     """CreditDrop. For those who want moar nadeko, apparently."""
@@ -42,22 +46,28 @@ class CreditDrop:
         """Credits! Get your Credits Right here!"""
         claimppi = ctx.message.author #Not sorry for that var name
         bank = self.bot.get_cog("Economy").bank #Finally grab the bank.
-        if self.number == 7:
-            await self.bot.say(claimppi + 'has gained ' + str(self.claimpot) + ' credits!')
-            bank.deposit_credits(ctx.message.author, self.claimpot)
-            self.randNum = randint(1, 10) # Re-rolls the number.
-            self.number = (self.randNum)
+        if self.number == 1:
+            try:
+                await self.bot.say(claimppi + 'has gained ' + str(self.claimpot) + ' credits!')
+                bank.deposit_credits(ctx.message.author, self.claimpot)
+                self.randNum = randint(0, 2) # Re-rolls the number.
+                self.number = (self.randNum)
+            except NoAccount:
+                await self.bot.say(claimppi + ' has no account to deposit credits into!')
         else:
             await self.bot.say('Lol no fuck off' + str(self.number))
-            self.randNum = randint(1, 10) # Re-rolls the number.
+            self.randNum = randint(0, 2) # Re-rolls the number.
             self.number = (self.randNum)
+
     async def on_message(self, ctx, message):
+        print(str(self.number))
         channel = message.channel
         author = message.author
-        self.randNum = randint(1, 10) # Re-rolls the number.
+        self.randNum = randint(0, 2) # Re-rolls the number.
         self.number = (self.randNum)
         print(str(self.number))
-        if self.number == 7: # LUCKY NUMBER 7! For testing only. When it goes live, there'll be a much higher count.
+        if self.number == 1: # LUCKY NUMBER 7! For testing only. When it goes live, there'll be a much higher count.
+            print("is gonna rule me")
             await self.bot.send_message(channel=channel, content='The Magic number has been triggered! Quick! Use [p]claim to grab the credits! first one wins!')
         else:
             pass
