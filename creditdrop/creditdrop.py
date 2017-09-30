@@ -54,6 +54,8 @@ class CreditDrop:
                 self.number = (self.randNum)
             except NoAccount:
                 await self.bot.say(str(claimppi) + ' has no account to deposit credits into!')
+                self.randNum = randint(0, 2) # Re-rolls the number.
+                self.number = (self.randNum)
         else:
             await self.bot.say('Lol no fuck off' + str(self.number))
             self.randNum = randint(0, 2) # Re-rolls the number.
