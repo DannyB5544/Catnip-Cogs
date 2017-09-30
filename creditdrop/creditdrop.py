@@ -73,6 +73,5 @@ class CreditDrop:
             self.randNum = randint(0, 2) # Re-rolls the number.
             self.number = (self.randNum)
             print(str(self.number))
-            pass
 def setup(bot):
     bot.add_cog(CreditDrop(bot))
