@@ -64,7 +64,7 @@ class CreditDrop:
         channel = message.channel
         author = message.author
         if author = self.bot.user:
-            return
+            print(' lol no')
         elif self.number == 1: # LUCKY NUMBER 7! For testing only. When it goes live, there'll be a much higher count.
             print("is gonna rule me")
             thefun = 'The Magic number has been triggered! Quick! Use [p]claim to grab the credits! first one wins!'
