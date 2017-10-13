@@ -54,7 +54,7 @@ class Creditdrop:
         bank = self.bot.get_cog("Economy").bank
         if self.number == 100:
             try:
-                await self.bot.say(str(claimauthor) + 'has gained ' + str(self.claimpot) + ' credits!')
+                await self.bot.say(str(claimauthor) + ' has gained ' + str(self.claimpot) + ' credits!')
                 bank.deposit_credits(ctx.message.author, self.claimpot)
                 self.randNum = randint(95, 102)
 
@@ -71,7 +71,7 @@ class Creditdrop:
         channel = message.channel
         author = message.author
         if author == self.bot.user:
-            print('Bot Command: Therefore Ignored.')
+            self.number = 500
         elif self.number == 100:
             print("Claim has been triggered!")
             claimmessage = 'Quick! ' + str(self.claimpot) + ' credits have been dropped on the boardwalk! Use `>claim` to get the money!'
