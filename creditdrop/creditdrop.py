@@ -52,17 +52,18 @@ class Creditdrop:
 
         claimauthor = ctx.message.author
         bank = self.bot.get_cog("Economy").bank
-        if self.number == 13:
+        if self.number == 100
             try:
                 await self.bot.say(str(claimauthor) + 'has gained ' + str(self.claimpot) + ' credits!')
                 bank.deposit_credits(ctx.message.author, self.claimpot)
-                self.randNum = randint(1, 500)
+                self.randNum = randint(95, 102)
+
                 self.number = (self.randNum)
             except Exception as e:
                 print('Well, that broke. Heres why: {}'.format(type(e)))
         else:
             await self.bot.say("Money hasn't been dropped yet you beach bum!")
-            self.randNum = randint(1, 500)
+            self.randNum = randint(95, 102)
             self.number = (self.randNum)
 
     #Message Detector
@@ -77,7 +78,7 @@ class Creditdrop:
             await self.bot.send_message(channel, claimmessage)
             await self.bot.wait_for_message(content = '>claim')
         else:
-            self.randNum = randint(1, 500)
+            self.randNum = randint(95, 102
             self.number = (self.randNum)
             print(str(self.number))
 
