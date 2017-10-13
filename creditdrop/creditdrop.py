@@ -22,7 +22,7 @@ class BankError(Exception):
 class NoAccount(BankError):
     pass
 
-class CreditClaim:
+class Creditdrop:
     """A Red Cog to stimulate Nadeko's economy system."""
 
     def __init__(self, bot):
@@ -82,4 +82,4 @@ class CreditClaim:
             print(str(self.number))
 
 def setup(bot):
-    bot.add_cog(CreditClaim(bot))
+    bot.add_cog(Creditdrop(bot))
