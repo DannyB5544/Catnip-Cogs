@@ -52,7 +52,7 @@ class Creditdrop:
 
         claimauthor = ctx.message.author
         bank = self.bot.get_cog("Economy").bank
-        if self.number == 100
+        if self.number == 100:
             try:
                 await self.bot.say(str(claimauthor) + 'has gained ' + str(self.claimpot) + ' credits!')
                 bank.deposit_credits(ctx.message.author, self.claimpot)
