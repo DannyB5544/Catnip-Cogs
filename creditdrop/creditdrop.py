@@ -74,7 +74,7 @@ class Creditdrop:
             print('Bot Command: Therefore Ignored.')
         elif self.number == 100:
             print("Claim has been triggered!")
-            claimmessage = 'Quick! ' + claimpot + ' credits have been dropped on the boardwalk! Use `>claim` to get the money!'
+            claimmessage = 'Quick! ' + str(self.claimpot) + ' credits have been dropped on the boardwalk! Use `>claim` to get the money!'
             await self.bot.send_message(channel, claimmessage)
             await self.bot.wait_for_message(content = '>claim')
         else:
