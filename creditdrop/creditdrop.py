@@ -78,7 +78,7 @@ class Creditdrop:
             await self.bot.send_message(channel, claimmessage)
             await self.bot.wait_for_message(content = '>claim')
         else:
-            self.randNum = randint(95, 102
+            self.randNum = randint(95, 102)
             self.number = (self.randNum)
             print(str(self.number))
 
