@@ -27,7 +27,7 @@ class Creditdrop:
 
     def __init__(self, bot):
         self.bot = bot
-        self.randNum = randint(1, 500)
+        self.randNum = randint(95,102)
         self.number = (self.randNum)
         self.claimpot = 100
     #Admin Commands
@@ -71,7 +71,7 @@ class Creditdrop:
         author = message.author
         if author == self.bot.user:
             print('Bot Command: Therefore Ignored.')
-        elif self.number == 13:
+        elif self.number == 100:
             print("Claim has been triggered!")
             claimmessage = 'Quick! ' + claimpot + ' credits have been dropped on the boardwalk! Use `>claim` to get the money!'
             await self.bot.send_message(channel, claimmessage)
