@@ -1,2 +1,2 @@
 # Catnip-Cogs
-A variety of crap for Red-DiscordBot.
+A variety of quality cogs created by Danstr and Plasma for Red-Discordbot.
