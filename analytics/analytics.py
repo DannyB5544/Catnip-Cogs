@@ -16,11 +16,11 @@ from random import randint
 from random import choice
 from .utils import checks
 
-class Analytics:
+class analytics:
     #Defining Stuffios
     def __init__(self, bot):
         self.bot = bot
-        self.database_file = 'data/Analytics/Database.json'
+        self.database_file = 'data/analytics/Database.json'
         self.database = dataIO.load_json(self.database_file)
 
     #Checkios
@@ -70,14 +70,14 @@ class Analytics:
 
 #Check Folderio
 def check_folder():
-    if not os.path.exists("data/Analytics"):
-        print("Creating data/Analytics folder...")
-        os.makedirs("data/Analytics")
+    if not os.path.exists("data/analytics"):
+        print("Creating data/analytics folder...")
+        os.makedirs("data/analytics")
 
 #Check Fileio
 def check_file():
     data = {}
-    f = "data/Analytics/Database.json"
+    f = "data/analytics/Database.json"
     if not dataIO.is_valid_json(f):
         print("Creating default Database.json...")
         dataIO.save_json(f, data)
@@ -86,5 +86,5 @@ def check_file():
 def setup(bot):
     check_folder()
     check_file()
-    cog = Analytics(bot)
+    cog = analytics(bot)
     bot.add_cog(cog)
