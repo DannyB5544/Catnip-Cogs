@@ -35,7 +35,7 @@ class Analytics:
         if not author.id in self.database[server.id]:
             message = "Looks like you've never sent any messages"
         else:
-            message = "You've sent " + str(self.database[server.id][author.id]["Messages Sent"]) + " messages!"
+            message = "You've sent " + str(self.database[server.id][author.id]["Messages Sent"]) + " messages and " + str(self.database[server.id][author.id]["Characters Sent"]) + " characters!"
 
         await self.bot.say(message)
 
@@ -46,7 +46,7 @@ class Analytics:
         if server.id not in self.database:
             self.database[server.id] = {}
 
-        #Setupio For People
+        #Word Count
         server = message.server
         author = message.author
         if not author.id in self.database[server.id]:
@@ -56,6 +56,16 @@ class Analytics:
             await self.save_database()
         else:
             self.database[server.id][author.id]["Messages Sent"] += 1
+            await self.save_database()
+
+        #Character Count
+        messagelen = len(message.content)
+        if not "Characters Sent" in self.database[server.id][author.id]:
+            self.database[server.id][author.id]["Characters Sent"] = 0
+            self.database[server.id][author.id]["Characters Sent"] += messagelen
+            await self.save_database()
+        else:
+            self.database[server.id][author.id]["Characters Sent"] += messagelen
             await self.save_database()
 
 #Check Folderio
