@@ -6,7 +6,7 @@ import asyncio
 from discord.ext import commands
 from .utils.dataIO import dataIO
 
-class avaterchange:
+class avatarchange:
     """Automatically change bot profile picture"""
 
     def __init__(self, bot):
