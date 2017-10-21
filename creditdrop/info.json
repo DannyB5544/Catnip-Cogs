@@ -1,7 +1,7 @@
 {
     "AUTHOR" : "Danstr",
-    "SHORT" : "Randomly Allow users to claim credits, COMPLETELY RANDOMLY.",
-    "DESCRIPTION" : "Randomly Allow users to claim credits, COMPLETELY RANDOMLY",
+    "SHORT" : "Randomly allow users to claim credits, COMPLETELY RANDOMLY.",
+    "DESCRIPTION" : "Replicate's Nadeko's economy, every message has a small chance of generating credits which users can then claim!",
     "DISABLED" : false,
     "NAME" : "CreditDrop",
     "TAGS" : ["economy", "autoresponse"],
