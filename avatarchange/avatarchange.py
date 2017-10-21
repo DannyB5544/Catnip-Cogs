@@ -6,7 +6,7 @@ import asyncio
 from discord.ext import commands
 from .utils.dataIO import dataIO
 
-class LunaPics:
+class avatarchange:
     """Automatically change bot profile picture"""
 
     def __init__(self, bot):
@@ -61,5 +61,5 @@ class LunaPics:
             self.bot.loop.create_task(change())
 
 def setup(bot):
-    bot.add_cog(LunaPics(bot))
+    bot.add_cog(avatarchange(bot))
 
