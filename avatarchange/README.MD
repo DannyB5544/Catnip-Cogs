@@ -1,2 +1,2 @@
 #THIS COG IS UNFINISHED
-I got a million things to fix yet.
+Please don't install till further notice.

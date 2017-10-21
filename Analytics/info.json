@@ -1,9 +1,0 @@
-{
-    "AUTHOR" : "Plasma",
-    "SHORT" : "Summon a variety of stats About yourself.",
-    "DESCRIPTION" : "Summon a variety of stats About yourself.",
-    "DISABLED" : false,
-    "NAME" : "Analytics",
-    "TAGS" : ["stats", "info"],
-    "INSTALL_MSG" : "`Thanks bb!`"
-}
