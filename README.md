@@ -7,4 +7,6 @@ I mean look at us, we're both ex-poops!
 1. [Analytics](#analytics)
 
 ### Analytics 
+Get analytics on individual members, your server, and more!
+#### Analytics Commands
   - `[p]stats <user>`: Get the stats on a user!
