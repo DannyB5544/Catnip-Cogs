@@ -5,9 +5,8 @@ But, c'mon, we know you are just wondering if we borked everything.
 I mean look at us, we're both ex-poops!
 
 ## Cogs
-    1. [Analytics](####analytics)
+    1. [Analytics](#analytics)
 
 ### Cog Descriptions
-#### Analytics
-Created by Plasma 
+#### Analytics 
   - `[p]stats <user>`: Get the stats on a user!
