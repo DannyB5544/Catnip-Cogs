@@ -49,12 +49,6 @@ class analytics:
         statembed.add_field(name = " ❯ Message Stats", value = "Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline = False)
         await self.bot.send_message(ctx.message.channel, embed = statembed)
 
-    @commands.command(pass_context = True)
-    async def messagesdeleted(self, ctx):
-        author = ctx.message.author
-        server = ctx.message.server
-        await self.bot.say("Messages Deleted: " + str(self.database[server.id][author.id]["mDeleted"]))
-
     #Sent Message Dectectorio
     async def on_message(self, message):
         #Setupio Up Server
