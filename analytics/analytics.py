@@ -41,13 +41,21 @@ class analytics:
             self.database[server.id][user.id]["mSent"] = 0
         if "cSent" not in self.database[server.id][user.id]:
             self.database[server.id][user.id]["cSent"] = 0
+        if "mDeleted" not in self.database[server.id][user.id]:
+            self.database[server.id][user.id]["mDeleted"] = 0
 
         statembed = discord.Embed(color = 0x546e7a)
         statembed.add_field(name = " ❯ Reaction Stats", value = "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline = False)
-        statembed.add_field(name = " ❯ Message Stats", value = "Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]), inline = False)
+        statembed.add_field(name = " ❯ Message Stats", value = "Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline = False)
         await self.bot.send_message(ctx.message.channel, embed = statembed)
 
-    #Message Dectectorio
+    @commands.command(pass_context = True)
+    async def messagesdeleted(self, ctx):
+        author = ctx.message.author
+        server = ctx.message.server
+        await self.bot.say("Messages Deleted: " + str(self.database[server.id][author.id]["mDeleted"]))
+
+    #Sent Message Dectectorio
     async def on_message(self, message):
         #Setupio Up Server
         server = message.server
@@ -74,6 +82,18 @@ class analytics:
             await self.save_database()
         else:
             self.database[server.id][author.id]["cSent"] += messagelen
+            await self.save_database()
+
+    #Deleted Message Dectectorio
+    async def on_message_delete(self, message):
+        server = message.server
+        author = message.author
+        if "mDeleted" not in self.database[server.id][author.id]:
+            self.database[server.id][author.id]["mDeleted"] = 0
+            self.database[server.id][author.id]["mDeleted"] = 1
+            await self.save_database()
+        else:
+            self.database[server.id][author.id]["mDeleted"] += 1
             await self.save_database()
 
     #Reaction Detectionio
