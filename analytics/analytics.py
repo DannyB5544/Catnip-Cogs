@@ -10,6 +10,7 @@ import random
 import discord
 
 from discord.ext import commands
+from __main__ import send_cmd_help
 from asyncio import sleep
 from cogs.utils.dataIO import dataIO
 from random import randint
@@ -27,17 +28,24 @@ class analytics:
     async def save_database(self):
         dataIO.save_json(self.database_file, self.database)
 
-    #Commands
+    #Commandios
     @commands.command(pass_context = True)
-    async def messagecount(self, ctx):
-        author = ctx.message.author
+    async def stats(self, ctx, user: discord.Member):
+        person = user
         server = ctx.message.server
-        if not author.id in self.database[server.id]:
-            message = "Looks like you've never sent any messages"
-        else:
-            message = "You've sent " + str(self.database[server.id][author.id]["Messages Sent"]) + " messages and " + str(self.database[server.id][author.id]["Characters Sent"]) + " characters!"
 
-        await self.bot.say(message)
+        #Checkios
+        if "rAdded" not in self.database[server.id][user.id]:
+            self.database[server.id][user.id]["rAdded"] = 0
+        if "mSent" not in self.database[server.id][user.id]:
+            self.database[server.id][user.id]["mSent"] = 0
+        if "cSent" not in self.database[server.id][user.id]:
+            self.database[server.id][user.id]["cSent"] = 0
+
+        statembed = discord.Embed(color = 0x546e7a)
+        statembed.add_field(name = " ❯ Reaction Stats", value = "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline = False)
+        statembed.add_field(name = " ❯ Message Stats", value = "Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]), inline = False)
+        await self.bot.send_message(ctx.message.channel, embed = statembed)
 
     #Message Dectectorio
     async def on_message(self, message):
@@ -46,26 +54,39 @@ class analytics:
         if server.id not in self.database:
             self.database[server.id] = {}
 
-        #Word Count
         server = message.server
         author = message.author
         if not author.id in self.database[server.id]:
             self.database[server.id][author.id] = {}
-            self.database[server.id][author.id]["Messages Sent"] = 0
-            self.database[server.id][author.id]["Messages Sent"] += 1
+            self.database[server.id][author.id]["mSent"] = 0
+            self.database[server.id][author.id]["rAdded"] = 0
+            self.database[server.id][author.id]["mSent"] = self.database[server.id][author.id]["mSent"] + 1
             await self.save_database()
         else:
-            self.database[server.id][author.id]["Messages Sent"] += 1
+            self.database[server.id][author.id]["mSent"] += 1
             await self.save_database()
 
         #Character Count
         messagelen = len(message.content)
-        if not "Characters Sent" in self.database[server.id][author.id]:
-            self.database[server.id][author.id]["Characters Sent"] = 0
-            self.database[server.id][author.id]["Characters Sent"] += messagelen
+        if not "cSent" in self.database[server.id][author.id]:
+            self.database[server.id][author.id]["cSent"] = 0
+            self.database[server.id][author.id]["cSent"] += messagelen
             await self.save_database()
         else:
-            self.database[server.id][author.id]["Characters Sent"] += messagelen
+            self.database[server.id][author.id]["cSent"] += messagelen
+            await self.save_database()
+
+    #Reaction Detectionio
+    # IDEA: Track most used emote
+    async def on_reaction_add(self, reaction, user):
+        server = user.server
+        author = user
+        if "rAdded" not in self.database[server.id][author.id]:
+            self.database[server.id][author.id]["rAdded"] = 0
+            self.database[server.id][author.id]["rAdded"] += 1
+            await self.save_database()
+        else:
+            self.database[server.id][author.id]["rAdded"] = self.database[server.id][author.id]["rAdded"] + 1
             await self.save_database()
 
 #Check Folderio
