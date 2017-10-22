@@ -5,7 +5,7 @@ But, c'mon, we know you are just wondering if we borked everything.
 I mean look at us, we're both ex-poops!
 
 ## Cogs
-    LINK HERE: [Analytics](#analytics)
+1. [Analytics](#analytics)
 
 ### Analytics 
   - `[p]stats <user>`: Get the stats on a user!
