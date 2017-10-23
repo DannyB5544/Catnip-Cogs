@@ -23,12 +23,12 @@ class httpcat:
         "414", "415", "416", "417", "418", "420", "421", "422", "423", "424",
         "425", "426", "429", "431", "444", "450", "500", "502", "503", "504",
         "506", "507", "508", "509", "511", "599"]
-        if str(num) in cats:
-            a = "https://http.cat/{}.jpg".format(str(num))
-            await self.bot.say(a)
-        else:
-            ra = random.choice(cats)
-            ra = "https://http.cat/{}.jpg".format(str(ra))
-            await self.bot.say(ra)
+        catID = str(num)
+        if str(catID) not in cats:
+            catID = random.choice(cats)
+            print("Randomising!")
+        a = "https://http.cat/{}.jpg".format(catID)
+        await self.bot.say(a)
+
 def setup(bot):
     bot.add_cog(httpcat(bot))
