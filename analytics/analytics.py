@@ -101,12 +101,14 @@ class analytics:
             await self.save_database()
 
         #Custom Emotes Count
-        sentMessage = message.object
+        sentMessage = str(message.content)
         splitMessages = sentMessage.split()
         emotesDetected = 0
         for temp in splitMessages:
             if temp[0] == "<":
-                emotesDetected = emotesDetected + 1
+                try:
+                    name = temp.split(':')[1]
+                    emotesDetected = emotesDetected + 1
             else:
                 emotesDetected = emotesDetected
 
