@@ -31,8 +31,14 @@ class analytics:
     #Commandios
     @commands.command(pass_context = True)
     async def stats(self, ctx, user: discord.Member):
-        person = user
+        """"Get stats on a person!"""
         server = ctx.message.server
+
+        #Setupio
+        if server.id not in self.database:
+            self.database[server.id] = {}
+        if user.id not in self.database[server.id]:
+            self.database[server.id][user.id] = {}
 
         #Checkios
         if "rAdded" not in self.database[server.id][user.id]:
@@ -43,11 +49,19 @@ class analytics:
             self.database[server.id][user.id]["cSent"] = 0
         if "mDeleted" not in self.database[server.id][user.id]:
             self.database[server.id][user.id]["mDeleted"] = 0
+        if "ceSent" not in self.database[server.id][user.id]:
+            self.database[server.id][user.id]["ceSent"] = 0
 
         statembed = discord.Embed(color = 0x546e7a)
-        statembed.add_field(name = " ❯ Reaction Stats", value = "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline = False)
+        statembed.add_field(name = " ❯ Emote Stats", value = "Custom Emotes Sent: " + str(self.database[server.id][user.id]["ceSent"]) + "\n" + "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline = False)
         statembed.add_field(name = " ❯ Message Stats", value = "Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline = False)
         await self.bot.send_message(ctx.message.channel, embed = statembed)
+
+    @commands.command(pass_context = True)
+    async def messagesdeleted(self, ctx):
+        author = ctx.message.author
+        server = ctx.message.server
+        await self.bot.say("Messages Deleted: " + str(self.database[server.id][author.id]["mDeleted"]))
 
     #Sent Message Dectectorio
     async def on_message(self, message):
@@ -60,8 +74,16 @@ class analytics:
         author = message.author
         if not author.id in self.database[server.id]:
             self.database[server.id][author.id] = {}
-            self.database[server.id][author.id]["mSent"] = 0
-            self.database[server.id][author.id]["rAdded"] = 0
+            if "rAdded" not in self.database[server.id][author.id]:
+                self.database[server.id][author.id]["rAdded"] = 0
+            if "mSent" not in self.database[server.id][author.id]:
+                self.database[server.id][author.id]["mSent"] = 0
+            if "cSent" not in self.database[server.id][author.id]:
+                self.database[server.id][author.id]["cSent"] = 0
+            if "mDeleted" not in self.database[server.id][author.id]:
+                self.database[server.id][author.id]["mDeleted"] = 0
+            if "ceSent" not in self.database[server.id][author.id]:
+                self.databse[server.id][author.id]["ceSent"] = 0
             self.database[server.id][author.id]["mSent"] = self.database[server.id][author.id]["mSent"] + 1
             await self.save_database()
         else:
@@ -76,6 +98,24 @@ class analytics:
             await self.save_database()
         else:
             self.database[server.id][author.id]["cSent"] += messagelen
+            await self.save_database()
+
+        #Custom Emotes Count
+        sentMessage = message.object
+        splitMessages = sentMessage.split()
+        emotesDetected = 0
+        for temp in splitMessages:
+            if temp[0] == "<":
+                emotesDetected = emotesDetected + 1
+            else:
+                emotesDetected = emotesDetected
+
+        if not "ceSent" in self.database[server.id][author.id]:
+            self.database[server.id][author.id]["ceSent"] = 0
+            self.database[server.id][author.id]["ceSent"] += emotesDetected
+            await self.save_database()
+        else:
+            self.database[server.id][author.id]["ceSent"] += emotesDetected
             await self.save_database()
 
     #Deleted Message Dectectorio
