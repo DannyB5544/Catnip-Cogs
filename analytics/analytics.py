@@ -102,13 +102,6 @@ class analytics:
         statembed.add_field(name = " ❯ VC Stats", value = "VC Sessions: " + str(self.database[server.id][user.id]["vcJoins"]) + "\n" + "Time Spent: " + str(self.formmatedTime), inline = False)
         await self.bot.send_message(ctx.message.channel, embed = statembed)
 
-    @commands.command(pass_context = True)
-    async def vcstats(self, ctx):
-        author = ctx.message.author
-        server = ctx.message.server
-        await self.bot.say("VC Sessions: " + str(self.database[server.id][author.id]["vcJoins"]))
-        await self.bot.say("Time in VCs: " + str(self.database[server.id][author.id]["vcTime"]))
-
     #Sent Message Dectectorio
     async def on_message(self, message):
         #Setupio Up Server
