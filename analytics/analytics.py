@@ -8,6 +8,8 @@ import aiohttp
 import json
 import random
 import discord
+import datetime
+import time
 
 from discord.ext import commands
 from __main__ import send_cmd_help
@@ -16,6 +18,7 @@ from cogs.utils.dataIO import dataIO
 from random import randint
 from random import choice
 from .utils import checks
+from datetime import datetime, timedelta
 
 class analytics:
     #Defining Stuffios
@@ -23,10 +26,44 @@ class analytics:
         self.bot = bot
         self.database_file = 'data/analytics/Database.json'
         self.database = dataIO.load_json(self.database_file)
+        self.vcKeeper = {}
+        self.timeHours = 0
+        self.timeDays = 0
+        self.timeMinutes = 0
+        self.timeSeconds = 0
+        self.formmatedTime = ""
 
     #Checkios
     async def save_database(self):
         dataIO.save_json(self.database_file, self.database)
+
+    async def timeFormat(self, seconds):
+        #Day
+        if seconds > 86400:
+            dayTuple = divmod(seconds, 86400)
+            self.timeDays = dayTuple[0]
+            seconds = dayTuple[1]
+        #Hour
+        if seconds > 3600:
+            hourTuple = divmod(seconds, 3600)
+            self.timeHours = hourTuple[0]
+            seconds = hourTuple[1]
+        #Minute
+        if seconds > 60:
+            minuteTuple = divmod(seconds, 60)
+            self.timeMinutes = minuteTuple[0]
+            seconds = minuteTuple[1]
+        #Seconds
+        self.timeSeconds = seconds
+        if self.timeDays > 0:
+            self.formmatedTime = "Days: " + str(self.timeDays) + ", Hours: " + str(self.timeHours) + ", Minutes: " + str(self.timeMinutes) + ", Seconds: " + str(self.timeSeconds)
+        elif self.timeHours > 0:
+            self.formmatedTime = "Hours: " + str(self.timeHours) + ", Minutes: " + str(self.timeMinutes) + ", Seconds: " + str(self.timeSeconds)
+        elif self.timeMinutes > 0:
+            self.formmatedTime = "Minutes: " + str(self.timeMinutes) + ", Seconds: " + str(self.timeSeconds)
+        else:
+            self.formmatedTime = "Seconds: " + str(self.timeSeconds)
+
 
     #Commandios
     @commands.command(pass_context = True)
@@ -51,17 +88,26 @@ class analytics:
             self.database[server.id][user.id]["mDeleted"] = 0
         if "ceSent" not in self.database[server.id][user.id]:
             self.database[server.id][user.id]["ceSent"] = 0
+        if "vcJoins" not in self.database[server.id][user.id]:
+            self.database[server.id][user.id]["vcJoins"] = 0
+        if "vcTime" not in self.database[server.id][user.id]:
+            self.database[server.id][user.id]["vcTime"] = 0
+        await self.save_database()
+        await self.timeFormat(int(self.database[server.id][user.id]["vcTime"]))
 
+        #Actual Embed
         statembed = discord.Embed(color = 0x546e7a)
         statembed.add_field(name = " ❯ Emote Stats", value = "Custom Emotes Sent: " + str(self.database[server.id][user.id]["ceSent"]) + "\n" + "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline = False)
         statembed.add_field(name = " ❯ Message Stats", value = "Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline = False)
+        statembed.add_field(name = " ❯ VC Stats", value = "VC Sessions: " + str(self.database[server.id][user.id]["vcJoins"]) + "\n" + "Time Spent: " + str(self.formmatedTime), inline = False)
         await self.bot.send_message(ctx.message.channel, embed = statembed)
 
     @commands.command(pass_context = True)
-    async def messagesdeleted(self, ctx):
+    async def vcstats(self, ctx):
         author = ctx.message.author
         server = ctx.message.server
-        await self.bot.say("Messages Deleted: " + str(self.database[server.id][author.id]["mDeleted"]))
+        await self.bot.say("VC Sessions: " + str(self.database[server.id][author.id]["vcJoins"]))
+        await self.bot.say("Time in VCs: " + str(self.database[server.id][author.id]["vcTime"]))
 
     #Sent Message Dectectorio
     async def on_message(self, message):
@@ -83,7 +129,11 @@ class analytics:
             if "mDeleted" not in self.database[server.id][author.id]:
                 self.database[server.id][author.id]["mDeleted"] = 0
             if "ceSent" not in self.database[server.id][author.id]:
-                self.databse[server.id][author.id]["ceSent"] = 0
+                self.database[server.id][author.id]["ceSent"] = 0
+            if "vcJoins" not in self.database[server.id][author.id]:
+                self.database[server.id][author.id]["vcJoins"] = 0
+            if "vcTime" not in self.database[server.id][user.id]:
+                self.database[server.id][user.id]["vcTime"] = 0
             self.database[server.id][author.id]["mSent"] = self.database[server.id][author.id]["mSent"] + 1
             await self.save_database()
         else:
@@ -109,6 +159,8 @@ class analytics:
                 try:
                     name = temp.split(':')[1]
                     emotesDetected = emotesDetected + 1
+                except:
+                    emotesDetected = emotesDetected
             else:
                 emotesDetected = emotesDetected
 
@@ -144,6 +196,46 @@ class analytics:
         else:
             self.database[server.id][author.id]["rAdded"] = self.database[server.id][author.id]["rAdded"] + 1
             await self.save_database()
+
+    async def on_voice_state_update(self, before, after):
+        server = after.server
+        member = after
+        if server.id not in self.database:
+            self.database[server.id] = {}
+
+        if not member.id in self.database[server.id]:
+            self.database[server.id][member.id] = {}
+            if "rAdded" not in self.database[server.id][member.id]:
+                self.database[server.id][member.id]["rAdded"] = 0
+            if "mSent" not in self.database[server.id][member.id]:
+                self.database[server.id][member.id]["mSent"] = 0
+            if "cSent" not in self.database[server.id][member.id]:
+                self.database[server.id][member.id]["cSent"] = 0
+            if "mDeleted" not in self.database[server.id][member.id]:
+                self.database[server.id][member.id]["mDeleted"] = 0
+            if "ceSent" not in self.database[server.id][member.id]:
+                self.database[server.id][member.id]["ceSent"] = 0
+            if "vcJoins" not in self.database[server.id][member.id]:
+                self.database[server.id][member.id]["vcJoins"] = 0
+            if "vcTime" not in self.database[server.id][user.id]:
+                self.database[server.id][user.id]["vcTime"] = 0
+            await self.save_database()
+
+
+        if not before.voice.voice_channel and after.voice.voice_channel:
+            self.database[server.id][member.id]["vcJoins"] += 1
+            timeNow = datetime.now()
+            self.vcKeeper[member.id] = timeNow
+            await self.save_database()
+        elif before.voice.voice_channel and not after.voice.voice_channel:
+            timeNow = datetime.now()
+            timeSpent = timeNow - self.vcKeeper[member.id]
+            self.database[server.id][member.id]["vcTime"] += int(timeSpent.total_seconds())
+            await self.save_database()
+
+            if member.id in self.vcKeeper:
+                del self.vcKeeper[member.id]
+
 
 #Check Folderio
 def check_folder():
