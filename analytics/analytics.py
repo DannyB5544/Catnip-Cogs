@@ -92,11 +92,14 @@ class analytics:
             self.database[server.id][user.id]["vcJoins"] = 0
         if "vcTime" not in self.database[server.id][user.id]:
             self.database[server.id][user.id]["vcTime"] = 0
+        if "tPinged" not in self.database[server.id][user.id]:
+            self.database[server.id][user.id]["tPinged"] = 0
         await self.save_database()
         await self.timeFormat(int(self.database[server.id][user.id]["vcTime"]))
 
-        #Actual Embed
+        #Actual Embed 
         statembed = discord.Embed(color = 0x546e7a)
+        statembed.add_field(name = " ❯ General Stats", value = "Times Pinged: " + str(self.database[server.id][user.id]["tPinged"]), inline = False)
         statembed.add_field(name = " ❯ Emote Stats", value = "Custom Emotes Sent: " + str(self.database[server.id][user.id]["ceSent"]) + "\n" + "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline = False)
         statembed.add_field(name = " ❯ Message Stats", value = "Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline = False)
         statembed.add_field(name = " ❯ VC Stats", value = "VC Sessions: " + str(self.database[server.id][user.id]["vcJoins"]) + "\n" + "Time Spent: " + str(self.formmatedTime), inline = False)
@@ -125,8 +128,10 @@ class analytics:
                 self.database[server.id][author.id]["ceSent"] = 0
             if "vcJoins" not in self.database[server.id][author.id]:
                 self.database[server.id][author.id]["vcJoins"] = 0
-            if "vcTime" not in self.database[server.id][user.id]:
-                self.database[server.id][user.id]["vcTime"] = 0
+            if "vcTime" not in self.database[server.id][author.id]:
+                self.database[server.id][author.id]["vcTime"] = 0
+            if "tPinged" not in self.database[server.id][author.id]:
+                self.database[server.id][author.id]["tPinged"] = 0
             self.database[server.id][author.id]["mSent"] = self.database[server.id][author.id]["mSent"] + 1
             await self.save_database()
         else:
@@ -165,6 +170,15 @@ class analytics:
             self.database[server.id][author.id]["ceSent"] += emotesDetected
             await self.save_database()
 
+        #Mention Detectionio
+        tmp = {}
+        for mention in message.mentions:
+                tmp[mention] = True
+        if message.author.id != self.bot.user.id:
+            for taggedPerson in tmp:
+                self.database[server.id][author.id]["tPinged"] += 1
+                await self.save_database()
+
     #Deleted Message Dectectorio
     async def on_message_delete(self, message):
         server = message.server
@@ -190,6 +204,7 @@ class analytics:
             self.database[server.id][author.id]["rAdded"] = self.database[server.id][author.id]["rAdded"] + 1
             await self.save_database()
 
+    #Voice Chat Detectionio
     async def on_voice_state_update(self, before, after):
         server = after.server
         member = after
@@ -210,8 +225,8 @@ class analytics:
                 self.database[server.id][member.id]["ceSent"] = 0
             if "vcJoins" not in self.database[server.id][member.id]:
                 self.database[server.id][member.id]["vcJoins"] = 0
-            if "vcTime" not in self.database[server.id][user.id]:
-                self.database[server.id][user.id]["vcTime"] = 0
+            if "vcTime" not in self.database[server.id][member.id]:
+                self.database[server.id][member.id]["vcTime"] = 0
             await self.save_database()
 
 
