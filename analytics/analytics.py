@@ -56,13 +56,13 @@ class analytics:
         #Seconds
         self.timeSeconds = seconds
         if self.timeDays > 0:
-            self.formmatedTime = "Days: " + str(self.timeDays) + ", Hours: " + str(self.timeHours) + ", Minutes: " + str(self.timeMinutes) + ", Seconds: " + str(self.timeSeconds)
+            self.formmatedTime = str(self.timeDays) + " days, " + str(self.timeHours) + " hours, " + str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         elif self.timeHours > 0:
-            self.formmatedTime = "Hours: " + str(self.timeHours) + ", Minutes: " + str(self.timeMinutes) + ", Seconds: " + str(self.timeSeconds)
+            self.formmatedTime = str(self.timeHours) + " hours, " + str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         elif self.timeMinutes > 0:
-            self.formmatedTime = "Minutes: " + str(self.timeMinutes) + ", Seconds: " + str(self.timeSeconds)
+            self.formmatedTime = str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         else:
-            self.formmatedTime = "Seconds: " + str(self.timeSeconds)
+            self.formmatedTime = str(self.timeSeconds) + " seconds."
 
 
     #Commandios
