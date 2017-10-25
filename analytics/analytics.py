@@ -97,13 +97,37 @@ class analytics:
         await self.save_database()
         await self.timeFormat(int(self.database[server.id][user.id]["vcTime"]))
 
-        #Actual Embed 
-        statembed = discord.Embed(color = 0x546e7a)
-        statembed.add_field(name = " ❯ General Stats", value = "Times Pinged Others: " + str(self.database[server.id][user.id]["tPinged"]), inline = False)
-        statembed.add_field(name = " ❯ Emote Stats", value = "Custom Emotes Sent: " + str(self.database[server.id][user.id]["ceSent"]) + "\n" + "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline = False)
-        statembed.add_field(name = " ❯ Message Stats", value = "Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline = False)
-        statembed.add_field(name = " ❯ VC Stats", value = "VC Sessions: " + str(self.database[server.id][user.id]["vcJoins"]) + "\n" + "Time Spent: " + str(self.formmatedTime), inline = False)
-        await self.bot.send_message(ctx.message.channel, embed = statembed)
+        #Actual Embedio
+        ustatembed = discord.Embed(color = 0x546e7a)
+        ustatembed.add_field(name = " ❯ General Stats", value = "Times Pinged Others: " + str(self.database[server.id][user.id]["tPinged"]), inline = False)
+        ustatembed.add_field(name = " ❯ Emote Stats", value = "Custom Emotes Sent: " + str(self.database[server.id][user.id]["ceSent"]) + "\n" + "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline = False)
+        ustatembed.add_field(name = " ❯ Message Stats", value = "Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline = False)
+        ustatembed.add_field(name = " ❯ VC Stats", value = "VC Sessions: " + str(self.database[server.id][user.id]["vcJoins"]) + "\n" + "Time Spent: " + str(self.formmatedTime), inline = False)
+        await self.bot.send_message(ctx.message.channel, embed = ustatembed)
+
+    @commands.command(pass_context = True)
+    async def sstats(self, ctx):
+        """Get stats on the server!"""
+        server = ctx.message.server
+        online = len([m.status for m in server.members if m.status == discord.Status.online or m.status == discord.Status.invisible])
+        idle = len([m.status for m in server.members if m.status == discord.Status.idle])
+        dnd = len([m.status for m in server.members if m.status == discord.Status.dnd])
+        offline = len([m.status for m in server.members if m.status == discord.Status.offline])
+        total_users = len(server.members)
+        text_channels = len([x for x in server.channels
+                             if x.type == discord.ChannelType.text])
+        voice_channels = len(server.channels) - text_channels
+        passed = (ctx.message.timestamp - server.created_at).days
+        created_at = ("Since {}. That's over {} days ago!"
+                      "".format(server.created_at.strftime("%d %b %Y %H:%M"),
+                                passed))
+
+        #Actual Embedio
+        sstatembed = discord.Embed(color = 0x546e7a)
+        sstatembed.add_field(name = " ❯ Server Info", value = "Created: " + str(passed) + " days ago" + "\n" + "Members: " + str(total_users), inline = False)
+        sstatembed.add_field(name = " ❯ Counts", value = "Text Channels: " + str(text_channels) + "\n" + "Voice Channels: " + str(voice_channel), inline = False)
+        sstatembed.add_field(name = " ❯ Members", value = "Online: " + str(online) + "\n" + "Idle: " + str(idle) + "\n" + "DND: " + str(dnd) + "\n" + "Offline:" + str(offline), inline = False)
+        await self.bot.send_message(ctx.message.channel, embed = sstatembed)
 
     #Sent Message Dectectorio
     async def on_message(self, message):
