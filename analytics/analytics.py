@@ -67,7 +67,7 @@ class analytics:
 
     #Commandios
     @commands.command(pass_context = True)
-    async def stats(self, ctx, user: discord.Member):
+    async def ustats(self, ctx, user: discord.Member):
         """"Get stats on a person!"""
         server = ctx.message.server
 
