@@ -125,8 +125,8 @@ class analytics:
         #Actual Embedio
         sstatembed = discord.Embed(color = 0x546e7a)
         sstatembed.add_field(name = " ❯ Server Info", value = "Created: " + str(passed) + " days ago" + "\n" + "Members: " + str(total_users), inline = False)
-        sstatembed.add_field(name = " ❯ Counts", value = "Text Channels: " + str(text_channels) + "\n" + "Voice Channels: " + str(voice_channels), inline = False)
-        sstatembed.add_field(name = " ❯ Members", value = "Online: " + str(online) + "\n" + "Idle: " + str(idle) + "\n" + "DND: " + str(dnd) + "\n" + "Offline: " + str(offline), inline = False)
+        sstatembed.add_field(name = " ❯ Count Stats", value = "Text Channels: " + str(text_channels) + "\n" + "Voice Channels: " + str(voice_channels), inline = False)
+        sstatembed.add_field(name = " ❯ Member Stats", value = "Online: " + str(online) + "\n" + "Idle: " + str(idle) + "\n" + "DND: " + str(dnd) + "\n" + "Offline: " + str(offline), inline = False)
         await self.bot.send_message(ctx.message.channel, embed = sstatembed)
 
     #Sent Message Dectectorio
