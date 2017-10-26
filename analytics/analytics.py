@@ -1,3 +1,21 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Marketplace
+Explore
+ @iiPlasma
+ Sign out
+ Watch 0
+  Unstar 1  Fork 2 Catnipz/Catnip-Cogs
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights  Settings
+Branch: master Find file Copy pathCatnip-Cogs/analytics/analytics.py
+6f1a56c  2 hours ago
+@Kowlin Kowlin Refactoring repetative functions
+2 contributors @iiPlasma @Kowlin
+RawBlameHistory
+273 lines (241 sloc)  11.4 KB
 # Imported Stuffios
 import asyncio
 import functools
@@ -216,13 +234,12 @@ class analytics:
 
         if not before.voice.voice_channel and after.voice.voice_channel:
             self.database[server.id][member.id]["vcJoins"] += 1
-            timeNow = datetime.now()
+            timeNow = int(time.perf_counter())
             self.vcKeeper[member.id] = timeNow
             await self.save_database()
         elif before.voice.voice_channel and not after.voice.voice_channel:
-            timeNow = datetime.now()
-            timeSpent = timeNow - self.vcKeeper[member.id]
-            self.database[server.id][member.id]["vcTime"] += int(timeSpent.total_seconds())
+            timeSpent = abs(self.vcKeeper[member.id] - int(time.perf_counter()))
+            self.database[server.id][member.id]["vcTime"] += int(timeSpent)
             await self.save_database()
 
             if member.id in self.vcKeeper:
