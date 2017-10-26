@@ -11,7 +11,7 @@ There are two steps to installing our cogs:
   2. `[p]cog install Catnip-Cogs <COG NAME>`
   
 # Available cogs
-  # Httpcat
+  `Httpcat`
   Ever wanted to have cats for all your http errors! Well now you can, thanks to http.cat. Seriously, its adorable.
 
 # Contact
