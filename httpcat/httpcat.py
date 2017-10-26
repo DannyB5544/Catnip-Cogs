@@ -23,22 +23,14 @@ class httpcat:
         """Randomly posts a http-cat from the
             aptly named httpcat site."""
         
-        print(num)
-        print(type(num))
-        
         if num is None:
-            print("Num is None")
             rand = randint(0, len(self.cats)-1)
-            print(rand)
-            print(type(rand))
             message = "https://http.cat/{}.jpg".format(self.cats[rand])
         
         elif str(num) not in self.cats:
-            print("Num not in cats")
             message = "Cat not found\nhttps://http.cat/404.jpg"
         
         else:
-            print("Success")
             for cat in self.cats:
                 if cat == str(num):
                     message = "https://http.cat/{}.jpg".format(str(num))
