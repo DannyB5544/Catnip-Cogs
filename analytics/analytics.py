@@ -132,34 +132,13 @@ class analytics:
     async def on_message(self, message):
         # Setupio Up Server
         server = message.server
-        if server.id not in self.database:
-            self.database[server.id] = {}
-
-        server = message.server
         author = message.author
-        if author.id not in self.database[server.id]:
-            self.database[server.id][author.id] = {}
-            if "rAdded" not in self.database[server.id][author.id]:
-                self.database[server.id][author.id]["rAdded"] = 0
-            if "mSent" not in self.database[server.id][author.id]:
-                self.database[server.id][author.id]["mSent"] = 0
-            if "cSent" not in self.database[server.id][author.id]:
-                self.database[server.id][author.id]["cSent"] = 0
-            if "mDeleted" not in self.database[server.id][author.id]:
-                self.database[server.id][author.id]["mDeleted"] = 0
-            if "ceSent" not in self.database[server.id][author.id]:
-                self.database[server.id][author.id]["ceSent"] = 0
-            if "vcJoins" not in self.database[server.id][author.id]:
-                self.database[server.id][author.id]["vcJoins"] = 0
-            if "vcTime" not in self.database[server.id][author.id]:
-                self.database[server.id][author.id]["vcTime"] = 0
-            if "tPinged" not in self.database[server.id][author.id]:
-                self.database[server.id][author.id]["tPinged"] = 0
-            self.database[server.id][author.id]["mSent"] = self.database[server.id][author.id]["mSent"] + 1
-            await self.save_database()
-        else:
-            self.database[server.id][author.id]["mSent"] += 1
-            await self.save_database()
+
+        await self.check_server_existance(server)
+        await self.check_user_existance(author, server)
+
+        self.database[server.id][author.id]["mSent"] += 1
+        await self.save_database()
 
         # Character Count
         messagelen = len(message.content)
@@ -231,26 +210,9 @@ class analytics:
     async def on_voice_state_update(self, before, after):
         server = after.server
         member = after
-        if server.id not in self.database:
-            self.database[server.id] = {}
 
-        if member.id not in self.database[server.id]:
-            self.database[server.id][member.id] = {}
-            if "rAdded" not in self.database[server.id][member.id]:
-                self.database[server.id][member.id]["rAdded"] = 0
-            if "mSent" not in self.database[server.id][member.id]:
-                self.database[server.id][member.id]["mSent"] = 0
-            if "cSent" not in self.database[server.id][member.id]:
-                self.database[server.id][member.id]["cSent"] = 0
-            if "mDeleted" not in self.database[server.id][member.id]:
-                self.database[server.id][member.id]["mDeleted"] = 0
-            if "ceSent" not in self.database[server.id][member.id]:
-                self.database[server.id][member.id]["ceSent"] = 0
-            if "vcJoins" not in self.database[server.id][member.id]:
-                self.database[server.id][member.id]["vcJoins"] = 0
-            if "vcTime" not in self.database[server.id][member.id]:
-                self.database[server.id][member.id]["vcTime"] = 0
-            await self.save_database()
+        await self.check_server_existance(server)
+        await self.check_user_existance(member, server)
 
         if not before.voice.voice_channel and after.voice.voice_channel:
             self.database[server.id][member.id]["vcJoins"] += 1
@@ -265,6 +227,25 @@ class analytics:
 
             if member.id in self.vcKeeper:
                 del self.vcKeeper[member.id]
+
+    async def check_server_existance(self, server: discord.Server):
+        """Internal function: Check if a database exists, if not make one"""
+        if server.id not in self.database:
+            self.database[server.id] = {}
+            await self.save_database()
+            return True
+        else:
+            pass
+
+    async def check_user_existance(self, member: discord.Member, server: discord.Server):
+        """Internal function: Check if a member exists in a server, if not make the member"""
+        if member.id not in self.database[server.id]:
+            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0}
+            self.database[server.id][member.id] = db_vars
+            await self.save_database()
+            return True  # User didn't exist in DB, he does now!
+        else:
+            pass
 
 
 # Check Folderio
