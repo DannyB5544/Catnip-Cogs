@@ -29,20 +29,20 @@ class levels:
         """Register all members to the database!"""
         server = ctx.message.server
         registerCount = 0
-        register_server(server.id)
+        self.register_server(server.id)
         await self.save_database()
 
         for m in server.members:
             if m.id not in self.database[server.id]:
                 registerCount += 1
-                register_person(server.id, m.id)
+                self.register_person(server.id, m.id)
         await self.bot.say("Registering Done! I've registered " + str(registerCount) + " members!")
 
     # Command - Check rank
     @commands.command(name="show", pass_context=True)
     async def rank(self, ctx, user : discord.Member=None):
         server = ctx.message.server
-        register_server(server.id)
+        self.register_server(server.id)
         await self.save_database()
         if not user:
             user = ctx.message.author
