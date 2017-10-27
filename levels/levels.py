@@ -30,6 +30,7 @@ class levels:
             server = ctx.message.server
             registerCount = 0
             register_server(server.id)
+            await self.save_database()
 
             for m in server.members:
                 if m.id not in self.database[server.id]:
@@ -41,6 +42,8 @@ class levels:
         @commands.command(name="show", pass_context=True)
         async def rank(self, ctx, user : discord.Member=None):
             server = ctx.message.server
+            register_server(server.id)
+            await self.save_database()
             if not user:
                 user = ctx.message.author
             if self.check_joined(user.id):
@@ -58,6 +61,7 @@ class levels:
             author = message.author
 
             register_server(server.id)
+            await self.save_database()
             embed = discord.Embed(color=0x546e7a)
 
             if self.check_joined(server.id, author.id):
@@ -66,17 +70,18 @@ class levels:
                     if seconds > 60:
                          self.add_xp(server.id, author.id)
                          self.xpCounter[author.id] = int(time.perf_counter())
-                         await self.save_database
+                         await self.save_database()
                     if self.need_level_up(server.id, author.id):
                         self.level_up(server.id, author.id)
                         message = "Whoo! {} has ascended to level {}".format(author.display_name, self.database[server.id][author.id]["Level"])
                         embed.add_field(name="Level Up!", value=message)
                         await self.bot.send_message(ctx.message.channel, embed = embed)
+                        await self.save_database()
             else:
                 self.register_person(server.id, author.id)
                 self.add_xp(server.id, author.id)
                 self.xpCounter[author.id] = int(time.perf_counter())
-                await save_database()
+                await self.save_database()
 
 
         # Function - Check if user is in database
@@ -90,7 +95,6 @@ class levels:
         def add_xp(self, sid, mid):
             if self.check_joined(self, sid, mid):
                 self.database[sid][mid]["XP"] += int(randint(15, 20))
-                await self.save_database()
 
         # Function - Get XP needed to level up
         def get_level_xp(self, level):
@@ -111,7 +115,6 @@ class levels:
         def level_up(self, sid, mid):
             self.database[sid][mid]["Level"] += 1
             self.database[sid][mid]["XP"] = 0
-            await self.save_database()
 
         # Function - Check if they need to level up
         def need_level_up(self, sid, mid):
@@ -123,13 +126,11 @@ class levels:
         # Function - Registers user
         def register_person(self, sid, mid):
             self.database[sid][mid] = self.userDefaults
-            await self.save_database()
 
         # Function - Registers server
         def register_server(self, sid):
             if sid not in self.database:
                 self.database[sid] = {}
-                await self.save_database()
 
 # Function - Check folder existence
 def check_folder():
