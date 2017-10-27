@@ -65,7 +65,7 @@ class analytics:
             self.formmatedTime = str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         else:
             self.formmatedTime = str(self.timeSeconds) + " seconds."
-        print("Seconds Out:" self.formmatedTime)
+        print("Seconds Out:" + self.formmatedTime)
 
     # Command - Get stats on a user
     @commands.command(pass_context=True)
