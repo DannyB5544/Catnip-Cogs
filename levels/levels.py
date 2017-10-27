@@ -94,8 +94,8 @@ class levels:
 
         # Function - Get XP needed to level up
         def get_level_xp(self, level):
-            xp = 5*(int(level)**2)+50*int(level)+100
-            return xp
+            xpneed = 5*(int(level)**2)+50*int(level)+100
+            return xpneed
 
         # Function - Get user level
         def get_level(self, sid, mid):
