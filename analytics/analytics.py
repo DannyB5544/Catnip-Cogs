@@ -39,7 +39,7 @@ class analytics:
 
     # Function - Format time
     async def timeFormat(self, seconds):
-        print(seconds)
+        print("Seconds in: " + seconds)
         if seconds > 86400:
             dayTuple = divmod(seconds, 86400)
             self.timeDays = dayTuple[0]
@@ -65,7 +65,7 @@ class analytics:
             self.formmatedTime = str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         else:
             self.formmatedTime = str(self.timeSeconds) + " seconds."
-        print(self.formmatedTime)
+        print("Seconds Out:" self.formmatedTime)
 
     # Command - Get stats on a user
     @commands.command(pass_context=True)
