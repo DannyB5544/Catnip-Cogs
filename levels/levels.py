@@ -48,7 +48,7 @@ class levels:
             user = ctx.message.author
         if self.check_joined(server.id, user.id):
             embed = discord.Embed(color=0x546e7a)
-            embed.add_field(name="Rank!",value="Level: {} \nXP: {}/{}".format(self.get_level(server.id, user.id), self.get_xp(server.id, author.id), self.get_level_xp(self.database[server.id][user.id]["XP"])))
+            embed.add_field(name="Rank!",value="Level: {} \nXP: {}/{}".format(self.get_level(server.id, user.id), self.get_xp(server.id, user.id), self.get_level_xp(self.database[server.id][user.id]["XP"])))
         else:
             embed = discord.Embed(color=0xe74c3c)
             embed.add_field(name="Error!",value="There was an error getting the stats!")
