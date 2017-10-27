@@ -44,23 +44,20 @@ class analytics:
             dayTuple = divmod(seconds, 86400)
             self.timeDays = dayTuple[0]
             seconds = dayTuple[1]
-            print("Days:" + str(seconds)
+            print(str(seconds))
         if seconds > 3600:
             hourTuple = divmod(seconds, 3600)
             self.timeHours = hourTuple[0]
             seconds = hourTuple[1]
 
-            print("Hours:" + str(seconds))
+            print(str(seconds))
         if seconds > 60:
             minuteTuple = divmod(seconds, 60)
             self.timeMinutes = minuteTuple[0]
             seconds = minuteTuple[1]
-            print("Minutes:" + str(seconds))
-        else:
-            self.timeSeconds = seconds
-            print(str(self.timeSeconds))
-            print(str(self.timeMinutes))
-            print(str(self.timeHours))
+            print(str(seconds))
+        self.timeSeconds = seconds
+        print(str(seconds))
         if self.timeDays > 0:
             self.formmatedTime = str(self.timeDays) + " days, " + str(self.timeHours) + " hours, " + str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         elif self.timeHours > 0:
@@ -69,7 +66,7 @@ class analytics:
             self.formmatedTime = str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         else:
             self.formmatedTime = str(self.timeSeconds) + " seconds."
-        print("Seconds Out:" + str(self.formmatedTime))
+        print("Seconds Out:" + self.formmatedTime)
 
     # Command - Get stats on a user
     @commands.command(pass_context=True)
@@ -252,7 +249,7 @@ class analytics:
     async def check_user_existance(self, member: discord.Member, server: discord.Server):
         """Internal function: Check if a member exists in a server, if not make the member"""
         if member.id not in self.database[server.id]:
-            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0, 'tPinged': 0}
+            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0, 'tPinted': 0}
             self.database[server.id][member.id] = db_vars
             await self.save_database()
             return True
