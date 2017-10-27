@@ -69,7 +69,7 @@ class analytics:
             self.formmatedTime = str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         else:
             self.formmatedTime = str(self.timeSeconds) + " seconds."
-        print("Seconds Out:" + self.formmatedTime)
+        print("Seconds Out:" + str(self.formmatedTime))
 
     # Command - Get stats on a user
     @commands.command(pass_context=True)
@@ -252,7 +252,7 @@ class analytics:
     async def check_user_existance(self, member: discord.Member, server: discord.Server):
         """Internal function: Check if a member exists in a server, if not make the member"""
         if member.id not in self.database[server.id]:
-            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0}
+            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0, 'tPinged': 0}
             self.database[server.id][member.id] = db_vars
             await self.save_database()
             return True
