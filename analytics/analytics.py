@@ -10,6 +10,7 @@ import random
 import discord
 import datetime
 import time
+
 from discord.ext import commands
 from __main__ import send_cmd_help
 from asyncio import sleep
@@ -43,25 +44,20 @@ class analytics:
         self.timeHours = 0
         self.timeMinutes = 0
         self.timeSeconds = 0
-        print("Seconds in: " + str(seconds))
         if seconds > 86400:
             dayTuple = divmod(seconds, 86400)
             self.timeDays = dayTuple[0]
             seconds = dayTuple[1]
-            print("DaySeconds:" + str(seconds))
         if seconds > 3600:
             hourTuple = divmod(seconds, 3600)
             self.timeHours = hourTuple[0]
             seconds = hourTuple[1]
-            print("HourSeconds:" + str(seconds))
+            ("HourSeconds:" + str(seconds))
         if seconds > 60:
             minuteTuple = divmod(seconds, 60)
             self.timeMinutes = minuteTuple[0]
             seconds = minuteTuple[1]
-            print("MinuteSeconds:" + str(seconds))
         self.timeSeconds = seconds
-        print("Final: " + str(seconds))
-        print("Finale: " + str(self.timeDays) + str(self.timeHours) + str(self.timeMinutes) + str(self.timeSeconds))
         if self.timeDays > 0:
             self.formmatedTime = str(self.timeDays) + " days, " + str(self.timeHours) + " hours, " + str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         elif self.timeHours > 0:
@@ -70,7 +66,6 @@ class analytics:
             self.formmatedTime = str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         else:
             self.formmatedTime = str(self.timeSeconds) + " seconds."
-        print("Seconds Out:" + self.formmatedTime)
 
     # Command - Get stats on a user
     @commands.command(pass_context=True)
@@ -220,7 +215,6 @@ class analytics:
         server = after.server
         member = after
 
-        print(member)
         await self.check_server_existance(server)
         await self.check_user_existance(member, server)
 
@@ -229,12 +223,10 @@ class analytics:
             timeNow = int(time.perf_counter())
             self.vcKeeper[member.id] = timeNow
             await self.save_database()
-            print(timeNow)
         elif before.voice.voice_channel and not after.voice.voice_channel:
             timeSpent = abs(self.vcKeeper[member.id] - int(time.perf_counter()))
             self.database[server.id][member.id]["vcTime"] += int(timeSpent)
             await self.save_database()
-            print(timeSpent)
 
             if member.id in self.vcKeeper:
                 del self.vcKeeper[member.id]
