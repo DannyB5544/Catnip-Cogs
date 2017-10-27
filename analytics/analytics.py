@@ -39,7 +39,7 @@ class analytics:
 
     # Function - Format time
     async def timeFormat(self, seconds):
-        print("Seconds in: " + seconds)
+        print("Seconds in: " + str(seconds))
         if seconds > 86400:
             dayTuple = divmod(seconds, 86400)
             self.timeDays = dayTuple[0]
