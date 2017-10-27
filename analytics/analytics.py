@@ -1,4 +1,4 @@
-# Imported Stuffios
+# Imports
 import asyncio
 import functools
 import io
@@ -21,7 +21,7 @@ from datetime import timedelta
 
 
 class analytics:
-    # Defining Stuffios
+    # Defining variables
     def __init__(self, bot):
         self.bot = bot
         self.database_file = 'data/analytics/Database.json'
@@ -33,27 +33,29 @@ class analytics:
         self.timeSeconds = 0
         self.formmatedTime = ""
 
-    # Checkios
+    # Function - Save Database
     async def save_database(self):
         dataIO.save_json(self.database_file, self.database)
 
+    # Function - Format time
     async def timeFormat(self, seconds):
-        # Day
+        print(seconds)
         if seconds > 86400:
             dayTuple = divmod(seconds, 86400)
             self.timeDays = dayTuple[0]
             seconds = dayTuple[1]
-        # Hour
+            print(seconds)
         if seconds > 3600:
             hourTuple = divmod(seconds, 3600)
             self.timeHours = hourTuple[0]
             seconds = hourTuple[1]
-        # Minute
+
+            print(seconds)
         if seconds > 60:
             minuteTuple = divmod(seconds, 60)
             self.timeMinutes = minuteTuple[0]
             seconds = minuteTuple[1]
-        # Seconds
+            print(seconds)
         self.timeSeconds = seconds
         if self.timeDays > 0:
             self.formmatedTime = str(self.timeDays) + " days, " + str(self.timeHours) + " hours, " + str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
@@ -63,14 +65,16 @@ class analytics:
             self.formmatedTime = str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         else:
             self.formmatedTime = str(self.timeSeconds) + " seconds."
+        print(self.formmatedTime)
 
-    # Commandios
+    # Command - Get stats on a user
     @commands.command(pass_context=True)
-    async def ustats(self, ctx, user: discord.Member):
+    async def ustats(self, ctx, user: discord.Member=None):
         """"Get stats on a person!"""
         server = ctx.message.server
+        if not user:
+            user = ctx.message.author
 
-        # Setupio
         if server.id not in self.database:
             self.database[server.id] = {}
         if user.id not in self.database[server.id]:
@@ -211,6 +215,7 @@ class analytics:
         server = after.server
         member = after
 
+        print(member)
         await self.check_server_existance(server)
         await self.check_user_existance(member, server)
 
@@ -219,14 +224,17 @@ class analytics:
             timeNow = int(time.perf_counter())
             self.vcKeeper[member.id] = timeNow
             await self.save_database()
+            print(timeNow)
         elif before.voice.voice_channel and not after.voice.voice_channel:
             timeSpent = abs(self.vcKeeper[member.id] - int(time.perf_counter()))
             self.database[server.id][member.id]["vcTime"] += int(timeSpent)
             await self.save_database()
+            print(timeSpent)
 
             if member.id in self.vcKeeper:
                 del self.vcKeeper[member.id]
 
+    # Function - Check's to see if server is in DB
     async def check_server_existance(self, server: discord.Server):
         """Internal function: Check if a database exists, if not make one"""
         if server.id not in self.database:
@@ -236,13 +244,14 @@ class analytics:
         else:
             pass
 
+    # Function - Checks to see if user is in DB
     async def check_user_existance(self, member: discord.Member, server: discord.Server):
         """Internal function: Check if a member exists in a server, if not make the member"""
         if member.id not in self.database[server.id]:
             db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0}
             self.database[server.id][member.id] = db_vars
             await self.save_database()
-            return True  # User didn't exist in DB, he does now!
+            return True
         else:
             pass
 
