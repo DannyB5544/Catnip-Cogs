@@ -44,20 +44,20 @@ class analytics:
             dayTuple = divmod(seconds, 86400)
             self.timeDays = dayTuple[0]
             seconds = dayTuple[1]
-            print(str(seconds))
+            print("DaySeconds:" + str(seconds))
         if seconds > 3600:
             hourTuple = divmod(seconds, 3600)
             self.timeHours = hourTuple[0]
             seconds = hourTuple[1]
-
-            print(str(seconds))
+            print("HourSeconds:" + str(seconds))
         if seconds > 60:
             minuteTuple = divmod(seconds, 60)
             self.timeMinutes = minuteTuple[0]
             seconds = minuteTuple[1]
-            print(str(seconds))
+            print("MinuteSeconds:" + str(seconds))
         self.timeSeconds = seconds
-        print(str(seconds))
+        print("Final: " + str(seconds))
+        print("Finale: " + str(self.timeDays) + str(self.timeHours) + str(self.timeMinutes) + str(self.timeSeconds))
         if self.timeDays > 0:
             self.formmatedTime = str(self.timeDays) + " days, " + str(self.timeHours) + " hours, " + str(self.timeMinutes) + " minutes, " + str(self.timeSeconds) + " seconds."
         elif self.timeHours > 0:
