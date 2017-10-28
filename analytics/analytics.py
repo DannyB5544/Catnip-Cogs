@@ -220,12 +220,12 @@ class analytics:
 
         if not before.voice.voice_channel and after.voice.voice_channel:
             self.database[server.id][member.id]["vcJoins"] += 1
-            timeNow = int(time.perf_counter())
+            timeNow = datetime.now()
             self.vcKeeper[member.id] = timeNow
             await self.save_database()
         elif before.voice.voice_channel and not after.voice.voice_channel:
-            timeSpent = abs(self.vcKeeper[member.id] - int(time.perf_counter()))
-            self.database[server.id][member.id]["vcTime"] += int(timeSpent)
+            timeSpent = datetime.now() - self.vcKeeper[member.id]
+            self.database[server.id][member.id]["vcTime"] += int(timeSpent.total_seconds())
             await self.save_database()
 
             if member.id in self.vcKeeper:
