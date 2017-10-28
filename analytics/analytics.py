@@ -21,7 +21,7 @@ from .utils import checks
 from datetime import timedelta
 
 
-class analytics:
+class Analytics:
     # Defining variables
     def __init__(self, bot):
         self.bot = bot
@@ -225,5 +225,5 @@ def check_file():
 def setup(bot):
     check_folder()
     check_file()
-    cog = analytics(bot)
+    cog = Analytics(bot)
     bot.add_cog(cog)
