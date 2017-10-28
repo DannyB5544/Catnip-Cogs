@@ -226,6 +226,7 @@ class analytics:
         elif before.voice.voice_channel and not after.voice.voice_channel:
             timeSpent = datetime.now() - self.vcKeeper[member.id]
             self.database[server.id][member.id]["vcTime"] += int(timeSpent.total_seconds())
+            print(str(timeSpent.total_seconds))
             await self.save_database()
 
             if member.id in self.vcKeeper:
