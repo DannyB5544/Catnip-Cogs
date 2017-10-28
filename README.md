@@ -12,6 +12,7 @@ There are two steps to installing our cogs:
   
 # Available cogs
   1. `HTTPCat:` Ever wanted cats for all your HTTP errors? Well now you can with this cog! Seriously, it's adorable.
+  2. `Analytics:` Get basic stats on users and the server! Works like a charm! ACHEVIEMENTS COMING SOON!
 
 # Contact
 If you'd like us to make a cog, report an issue, or suggest an enhancement: go [here](https://github.com/Catnipz/Catnip-Cogs/issues)! We also have a **WIP** server that's right.... [here](https://discord.gg/7N2rEpy)
