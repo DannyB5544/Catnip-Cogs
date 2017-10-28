@@ -75,34 +75,13 @@ class analytics:
         if not user:
             user = ctx.message.author
 
-        if server.id not in self.database:
-            self.database[server.id] = {}
-        if user.id not in self.database[server.id]:
-            self.database[server.id][user.id] = {}
-
-        # Checkios
-        if "rAdded" not in self.database[server.id][user.id]:
-            self.database[server.id][user.id]["rAdded"] = 0
-        if "mSent" not in self.database[server.id][user.id]:
-            self.database[server.id][user.id]["mSent"] = 0
-        if "cSent" not in self.database[server.id][user.id]:
-            self.database[server.id][user.id]["cSent"] = 0
-        if "mDeleted" not in self.database[server.id][user.id]:
-            self.database[server.id][user.id]["mDeleted"] = 0
-        if "ceSent" not in self.database[server.id][user.id]:
-            self.database[server.id][user.id]["ceSent"] = 0
-        if "vcJoins" not in self.database[server.id][user.id]:
-            self.database[server.id][user.id]["vcJoins"] = 0
-        if "vcTime" not in self.database[server.id][user.id]:
-            self.database[server.id][user.id]["vcTime"] = 0
-        if "tPinged" not in self.database[server.id][user.id]:
-            self.database[server.id][user.id]["tPinged"] = 0
-        await self.save_database()
+        check_server_existance(server)
+        check_user_existance(server, user)
         await self.timeFormat(int(self.database[server.id][user.id]["vcTime"]))
 
         # Actual Embedio
         ustatembed = discord.Embed(color=0x546e7a)
-        ustatembed.add_field(name=" ❯ General Stats", value="Times Pinged Others: " + str(self.database[server.id][user.id]["tPinged"]), inline=False)
+        ustatembed.add_field(name=" ❯ General Stats", value="Times Pinged Others: " + str(self.database[server.id][user.id]["tPingedOther"]) + '\n' + "Times Pinged: " + str(self.database[server.id][user.id]["tPinged"]), inline=False)
         ustatembed.add_field(name=" ❯ Emote Stats", value="Custom Emotes Sent: " + str(self.database[server.id][user.id]["ceSent"]) + "\n" + "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline=False)
         ustatembed.add_field(name=" ❯ Message Stats", value="Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline=False)
         ustatembed.add_field(name=" ❯ VC Stats", value="VC Sessions: " + str(self.database[server.id][user.id]["vcJoins"]) + "\n" + "Time Spent: " + str(self.formmatedTime), inline=False)
@@ -146,13 +125,8 @@ class analytics:
 
         # Character Count
         messagelen = len(message.content)
-        if "cSent" not in self.database[server.id][author.id]:
-            self.database[server.id][author.id]["cSent"] = 0
-            self.database[server.id][author.id]["cSent"] += messagelen
-            await self.save_database()
-        else:
-            self.database[server.id][author.id]["cSent"] += messagelen
-            await self.save_database()
+        self.database[server.id][author.id]["cSent"] += messagelen
+        await self.save_database()
 
         # Custom Emotes Count
         sentMessage = str(message.content)
@@ -168,13 +142,8 @@ class analytics:
             else:
                 emotesDetected = emotesDetected
 
-        if "ceSent" not in self.database[server.id][author.id]:
-            self.database[server.id][author.id]["ceSent"] = 0
-            self.database[server.id][author.id]["ceSent"] += emotesDetected
-            await self.save_database()
-        else:
-            self.database[server.id][author.id]["ceSent"] += emotesDetected
-            await self.save_database()
+        self.database[server.id][author.id]["ceSent"] += emotesDetected
+        await self.save_database()
 
         # Mention Detectionio
         tmp = {}
@@ -182,33 +151,25 @@ class analytics:
                 tmp[mention] = True
         if message.author.id != self.bot.user.id:
             for taggedPerson in tmp:
-                self.database[server.id][author.id]["tPinged"] += 1
+                check_user_existance(server, taggedPerson)
+                self.database[server.id][author.id]["tPingedOthers"] += 1
+                self.database[server.id][taggedPerson.id]["tPinged"] += 1
                 await self.save_database()
 
     # Deleted Message Dectectorio
     async def on_message_delete(self, message):
         server = message.server
         author = message.author
-        if "mDeleted" not in self.database[server.id][author.id]:
-            self.database[server.id][author.id]["mDeleted"] = 0
-            self.database[server.id][author.id]["mDeleted"] = 1
-            await self.save_database()
-        else:
-            self.database[server.id][author.id]["mDeleted"] += 1
-            await self.save_database()
+        self.database[server.id][author.id]["mDeleted"] += 1
+        await self.save_database()
 
     # Reaction Detectionio
     # IDEA: Track most used emote
     async def on_reaction_add(self, reaction, user):
         server = user.server
         author = user
-        if "rAdded" not in self.database[server.id][author.id]:
-            self.database[server.id][author.id]["rAdded"] = 0
-            self.database[server.id][author.id]["rAdded"] += 1
-            await self.save_database()
-        else:
-            self.database[server.id][author.id]["rAdded"] = self.database[server.id][author.id]["rAdded"] + 1
-            await self.save_database()
+        self.database[server.id][author.id]["rAdded"] += 1
+        await self.save_database()
 
     # Voice Chat Detectionio
     async def on_voice_state_update(self, before, after):
@@ -226,6 +187,7 @@ class analytics:
         elif before.voice.voice_channel and not after.voice.voice_channel:
             timeSpent = time.time() - self.vcKeeper[member.id]
             self.database[server.id][member.id]["vcTime"] += int(timeSpent)
+            print(str(timeSpent.total_seconds))
             await self.save_database()
 
             if member.id in self.vcKeeper:
@@ -245,7 +207,7 @@ class analytics:
     async def check_user_existance(self, member: discord.Member, server: discord.Server):
         """Internal function: Check if a member exists in a server, if not make the member"""
         if member.id not in self.database[server.id]:
-            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0, 'tPinged': 0}
+            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0, 'tPingedOthers': 0, 'tPinged': 0}
             self.database[server.id][member.id] = db_vars
             await self.save_database()
             return True
