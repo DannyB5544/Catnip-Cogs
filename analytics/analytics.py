@@ -220,12 +220,12 @@ class analytics:
 
         if not before.voice.voice_channel and after.voice.voice_channel:
             self.database[server.id][member.id]["vcJoins"] += 1
-            timeNow = datetime.now()
+            timeNow = time.time()
             self.vcKeeper[member.id] = timeNow
             await self.save_database()
         elif before.voice.voice_channel and not after.voice.voice_channel:
-            timeSpent = datetime.now() - self.vcKeeper[member.id]
-            self.database[server.id][member.id]["vcTime"] += int(timeSpent.total_seconds())
+            timeSpent = time.time() - self.vcKeeper[member.id]
+            self.database[server.id][member.id]["vcTime"] += int(timeSpent)
             print(str(timeSpent.total_seconds))
             await self.save_database()
 
@@ -246,7 +246,7 @@ class analytics:
     async def check_user_existance(self, member: discord.Member, server: discord.Server):
         """Internal function: Check if a member exists in a server, if not make the member"""
         if member.id not in self.database[server.id]:
-            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0, 'tPinted': 0}
+            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0, 'tPinged': 0}
             self.database[server.id][member.id] = db_vars
             await self.save_database()
             return True
