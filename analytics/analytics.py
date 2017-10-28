@@ -81,7 +81,7 @@ class analytics:
 
         # Actual Embedio
         ustatembed = discord.Embed(color=0x546e7a)
-        ustatembed.add_field(name=" ❯ General Stats", value="Times Pinged Others: " + str(self.database[server.id][user.id]["tPingedOther"]) + '\n' + "Times Pinged: " + str(self.database[server.id][user.id]["tPinged"]), inline=False)
+        ustatembed.add_field(name=" ❯ General Stats", value="Times Pinged Others: " + str(self.database[server.id][user.id]["tPingedOthers"]) + '\n' + "Times Pinged: " + str(self.database[server.id][user.id]["tPinged"]), inline=False)
         ustatembed.add_field(name=" ❯ Emote Stats", value="Custom Emotes Sent: " + str(self.database[server.id][user.id]["ceSent"]) + "\n" + "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline=False)
         ustatembed.add_field(name=" ❯ Message Stats", value="Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline=False)
         ustatembed.add_field(name=" ❯ VC Stats", value="VC Sessions: " + str(self.database[server.id][user.id]["vcJoins"]) + "\n" + "Time Spent: " + str(self.formmatedTime), inline=False)
