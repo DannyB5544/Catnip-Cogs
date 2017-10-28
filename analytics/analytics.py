@@ -76,7 +76,7 @@ class analytics:
             user = ctx.message.author
 
         await self.check_server_existance(server)
-        await self.check_user_existance(server, user)
+        await self.check_user_existance(user, server)
         await self.timeFormat(int(self.database[server.id][user.id]["vcTime"]))
 
         # Actual Embedio
