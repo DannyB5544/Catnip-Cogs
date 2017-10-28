@@ -75,8 +75,8 @@ class analytics:
         if not user:
             user = ctx.message.author
 
-        check_server_existance(server)
-        check_user_existance(server, user)
+        await self.check_server_existance(server)
+        await self.check_user_existance(server, user)
         await self.timeFormat(int(self.database[server.id][user.id]["vcTime"]))
 
         # Actual Embedio
@@ -168,6 +168,8 @@ class analytics:
     async def on_reaction_add(self, reaction, user):
         server = user.server
         author = user
+        await self.check_server_existance(server)
+        await self.check_user_existance(server, author)
         self.database[server.id][author.id]["rAdded"] += 1
         await self.save_database()
 
