@@ -81,7 +81,6 @@ class analytics:
 
         # Actual Embedio
         ustatembed = discord.Embed(color=0x546e7a)
-        ustatembed.add_field(name=" ❯ General Stats", value="Times Pinged Others: " + str(self.database[server.id][user.id]["tPinged"]), inline=False)
         ustatembed.add_field(name=" ❯ Emote Stats", value="Custom Emotes Sent: " + str(self.database[server.id][user.id]["ceSent"]) + "\n" + "Reactions Added: " + str(self.database[server.id][user.id]["rAdded"]), inline=False)
         ustatembed.add_field(name=" ❯ Message Stats", value="Messages Sent: " + str(self.database[server.id][user.id]["mSent"]) + "\n" + "Characters Sent: " + str(self.database[server.id][user.id]["cSent"]) + "\n" + "Messages Deleted: " + str(self.database[server.id][user.id]["mDeleted"]), inline=False)
         ustatembed.add_field(name=" ❯ VC Stats", value="VC Sessions: " + str(self.database[server.id][user.id]["vcJoins"]) + "\n" + "Time Spent: " + str(self.formmatedTime), inline=False)
@@ -145,16 +144,6 @@ class analytics:
         self.database[server.id][author.id]["ceSent"] += emotesDetected
         await self.save_database()
 
-        # Mention Detectionio
-        tmp = {}
-        for mention in message.mentions:
-                tmp[mention] = True
-        if message.author.id != self.bot.user.id:
-            for taggedPerson in tmp:
-                check_user_existance(server, taggedPerson)
-                self.database[server.id][author.id]["tPinged"] += 1
-                await self.save_database()
-
     # Deleted Message Dectectorio
     async def on_message_delete(self, message):
         server = message.server
@@ -208,7 +197,7 @@ class analytics:
     async def check_user_existance(self, member: discord.Member, server: discord.Server):
         """Internal function: Check if a member exists in a server, if not make the member"""
         if member.id not in self.database[server.id]:
-            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0, 'tPinged': 0}
+            db_vars = {'rAdded': 0, 'mSent': 0, 'cSent': 0, 'mDeleted': 0, 'ceSent': 0, 'vcJoins': 0, 'vcTime': 0}
             self.database[server.id][member.id] = db_vars
             await self.save_database()
             return True
