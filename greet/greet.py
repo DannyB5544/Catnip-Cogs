@@ -13,7 +13,7 @@ from copy import deepcopy
 
 # Default- Settings
 default_settings = {'Greeting': "Welcome {0.name} to {1.name}!", 'On': False, 'Channel': None}
-setings_path = "data/greet/settings.json"
+settings_path = "data/greet/settings.json"
 
 # Class- Greet
 class Greet:
