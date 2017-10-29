@@ -82,7 +82,7 @@ class Greet:
         server = ctx.message.server
         if greetChannel == None:
             greetChannel = ctx.message.server.default_channel
-        if not server.get_member(self.bot.user.id).permissions_in(channel).send_messages:
+        if not server.get_member(self.bot.user.id).permissions_in(greetChannel).send_messages:
             await self.bot.say("I do not have permissions to send messages to {0.mention}".format(channel))
             return
         self.settings[server.id]['Channel'] = greetChannel.id
