@@ -28,7 +28,7 @@ class Greet:
         dataIO.save_json(settings_path, self.settings)
 
     # Command Group- Settings
-    @commands.command(pass_context = True)
+    @commands.group(pass_context = True)
     @checks.admin_or_permissions(manage_server = True)
     async def greetset(self, ctx):
         """Sets greet module settings"""
