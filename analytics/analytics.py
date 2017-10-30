@@ -11,7 +11,7 @@ from cogs.utils.dataIO import dataIO
 from datetime import timedelta
 
 
-class analytics:
+class Analytics:
     # Defining Stuffios
     def __init__(self, bot):
         self.bot = bot
@@ -23,7 +23,7 @@ class analytics:
     def save_database(self):
         dataIO.save_json(self.database_file, self.database)
 
-    async def timeFormat(self, seconds):
+    def timeFormat(self, seconds):
         """
         Format seconds in to an easily read format
         """
@@ -60,8 +60,7 @@ class analytics:
         self.save_database()
 
         print(self.database[server.id][user.id]["vcTime"])
-        vcTime = await self.timeFormat(self.database[server.id][user.id]["vcTime"])
-        print(vcTime)
+        vcTime = self.timeFormat(self.database[server.id][user.id]["vcTime"])
 
         # Actual Embedio
         ustatembed = discord.Embed(color=0x546e7a)
